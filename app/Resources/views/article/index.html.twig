@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Article list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+                <th>Author</th>
+                <th>Urlvideo</th>
+                <th>Active</th>
+                <th>Created</th>
+                <th>Updated</th>
+                <th>Slug</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for article in articles %}
+            <tr>
+                <td><a href="{{ path('admin_article_show', { 'id': article.id }) }}">{{ article.id }}</a></td>
+                <td>{{ article.title }}</td>
+                <td>{{ article.description[:25] }}</td>
+                <td>{{ article.author }}</td>
+                <td>{{ article.urlvideo }}</td>
+                <td>{% if article.active %}Yes{% else %}No{% endif %}</td>
+                <td>{% if article.created %}{{ article.created|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{% if article.updated %}{{ article.updated|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ article.slug }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('admin_article_show', { 'id': article.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('admin_article_edit', { 'id': article.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('admin_article_new') }}">Create a new entry</a>
+        </li>
+    </ul>
+{% endblock %}
