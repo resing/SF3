@@ -81,7 +81,7 @@
 						</div>
 						<div class="clearfix"> </div>
 					</div>
-                                {% for comment in article.comments %}
+                                {% for i ,comment in article.comments %}
 					<div class="media response-info">
 						<div class="media-left response-text-left">
 							<a href="#">
@@ -93,10 +93,40 @@
 							<p>{{ comment.description}}</p>
 							<ul>
 								<li>{{comment.created |date('Y-m-d') }}</li>
-								<li><a href="#" id="replay">Reply</a></li>
+                                                                <li><div class="expander">Reply</div></li>
+                                                                <div class="text">
+                                                                {{ form_start(form2, {'action': path('replays',{ 'comment': comment.id,'article':article.id }), 'method': 'POST'}) }}
+                                                                {{ form_row(form2._token) }}
+                                                                {{ form_errors(form2.description) }}
+                                                                {{ form_widget(form2.description,{'attr': {'onfocus': 'if (this.value==\'Your Comment...\') this.value = \'\'', 'onblur': 'if (this.value==\'\') this.value = \'Your Comment...\''} }) }}
+                                                               <input type="hidden" value="{{article.id}}" id="mytool_idGroup" name="article"/>
+                                                               <input type="hidden" value="{{comment.id}}" id="mytool_idGroup" name="comment"/>
+                                                               <input type="submit" value="Submit Comment">
+                                                                {{ form_end(form2) }}
+                                                               
+                                                                </div>
+
                                                                 
 							</ul>
-							<textarea id="test" onfocus="this.value = '';" onblur="if (this.value == '') {this.value = 'Your Comment...';}" required="">Your Comment...</textarea>
+                                                         {% for replay in comment.replays %}
+                                                                <div class="media response-info">
+								<div class="media-left response-text-left">
+									<a href="#">
+										<img class="media-object" src="{{asset('bundles/images/sin1.jpg')}}" alt="">
+									</a>
+									<h5><a href="#">Username</a></h5>
+								</div>
+								<div class="media-body response-text-right">
+									<p>{{replay.description}}</p>
+									<ul>
+										<li>{{replay.created |date('Y-m-d') }}</li>
+										<li><a href="single.html">Reply</a></li>
+									</ul>		
+								</div>
+								<div class="clearfix"> </div>
+                                                          
+							</div>
+                                                                                 {% endfor %}
 						</div>
 						<div class="clearfix"> </div>
 					</div>
